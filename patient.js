@@ -2,11 +2,11 @@ const Pool = require('pg').Pool
 const pool = new Pool({
 	          user: 'postgres',
 	          host: 'localhost',
-	          database: 'uhainsurce',
-	          password: 'OurDbMachine%12151992',
+	          database: 'postgres',
+	          password: 'sindhu',
 	          port: 5432,
 });
-const get_Pat_dtls = () => {
+/*const get_Pat_dtls = () => {
 	  return new Promise(function(resolve, reject) {
 		      pool.query('SELECT * FROM public.pat_dtls', (error, results) => {
 			            if (error) {
@@ -15,7 +15,7 @@ const get_Pat_dtls = () => {
 			            resolve(results.rows);
 			          })
 		    }) 
-}
+}*/
 
 
 const get_doctor_dtls = () => {
@@ -108,24 +108,38 @@ const createUser = (body) => {
   };
   
 
+  const get_pat_dlts = (patients_id) => {
+	return new Promise(function(resolve, reject) {
+		//const pat_id = req.params.patients_id
+		///const { patients_id } =  body.patients_id;
+		/////console.log(patients_id);
+			pool.query('SELECT * FROM patients_user INNER JOIN pat_dtls ON patients_user.patientid = pat_dtls.patient_id WHERE patients_user.patientid = $1;', [patients_id], (error, results) => {
+			if (error) {
+							  reject(error)
+							}
+					  resolve(results.rows);
+					})
+		  }) 
+}
  /* app.get("/loginExpress", async (req, res) => {
     try {
         const results = await pool.query("SELECT * FROM accounts WHERE username = $1 AND password = $2 returning *",
             [req.body.username, req.body.password])
         console.log("User found!");
     } catch (err) {
-        console.error(err.message);
+        console.error(err
+			.message);
     }
 });*/
 
 
 module.exports = {
-	  get_Pat_dtls,
+	 
 	  create_Pat_dtls,
 	  create_doctor_account,
 	  delete_Pat_dtls,
 	  createUser,
 	  Users,
-	  get_doctor_dtls
-	  
+	  get_doctor_dtls,
+	  get_pat_dlts
 }

@@ -19,9 +19,10 @@ app.use(express.json())
 // 	      next();
 // 	      });
 	
-             app.get('/', (req, res) => {
-	        merchant_model.get_Pat_dtls()
-	          .then(response => {
+             app.post('/', (req, res) => {
+				const { patients_id } = req.body;
+	        merchant_model.get_pat_dlts(patients_id)
+			  .then(response => {
 	              res.status(200).send(response);
 	                })
 	                  .catch(error => {
@@ -29,7 +30,7 @@ app.use(express.json())
 	                        })
 	                        })
 							app.get('/getdocdtls', (req, res) => {
-								//res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
+							//res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
 								merchant_model.get_doctor_dtls()
 								
 								  .then(response => {
